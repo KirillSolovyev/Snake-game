@@ -24,7 +24,7 @@ namespace Snake {
                 return y;
             }
             set {
-                y = checkVal(value, Console.BufferHeight);
+                y = checkVal(value, 20);
             }
         }
 

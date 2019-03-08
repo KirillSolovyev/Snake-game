@@ -9,7 +9,13 @@ namespace Snake {
     class Wall : Objects{
         string levelName;
 
-        public Wall(char sign, string _levelName) : base(sign){
+        public string LevelName {
+            get {
+                return levelName;
+            }
+        }
+
+        public Wall(char sign, string _levelName, List<ConsoleColor> colors) : base(sign, colors){
             levelName = _levelName;
             LoadLevel();
         }

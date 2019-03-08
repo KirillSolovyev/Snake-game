@@ -6,16 +6,29 @@ using System.Threading.Tasks;
 
 namespace Snake {
     class Food : Objects{
-        public Food(char sign) : base(sign){
-            GenerateFood();
+        public Food(char sign, List<Objects> ToComp, List<ConsoleColor> colors) : base(sign, colors){
+            GenerateFood(ToComp);
         }
 
         public void GenerateFood() {
-            Points[0].ClearPrev();
             Random randNum = new Random();
             Points[0].X = randNum.Next(0, Console.BufferWidth);
             Points[0].Y = randNum.Next(0, Console.BufferHeight);
-            Points[0].Draw();
+        }
+
+        public void GenerateFood(List<Objects> ToCompare) {
+            GenerateFood();
+
+            CheckAgain:
+            for(int i = 0; i < ToCompare.Count; i++) {
+                for(int j = 0; j < ToCompare[i].Points.Count; j++) {
+                    if(Points[0].X == ToCompare[i].Points[j].X && Points[0].Y == ToCompare[i].Points[j].Y) {
+                        GenerateFood();
+                        goto CheckAgain;
+                    }
+                }
+            }
+            DrawObject();
         }
     }
 }

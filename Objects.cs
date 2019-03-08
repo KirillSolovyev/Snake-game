@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Snake {
     class Objects {
         public List<Point> Points = new List<Point>();
+        public List<ConsoleColor> colors = new List<ConsoleColor>();
 
         public Point GetHead {
             get {
@@ -18,14 +19,30 @@ namespace Snake {
             Points.Add(new Point(sign, 0, 0));
         }
 
+        public Objects(char sign, List<ConsoleColor> colors) {
+            Points.Add(new Point(sign, 0, 0));
+            this.colors = colors;
+        }
+
         public Objects(char sign, int x, int y) {
             Points.Add(new Point(sign, x, y));
         }
 
+        public Objects(char sign, int x, int y, List<ConsoleColor> colors) {
+            Points.Add(new Point(sign, x, y));
+            this.colors = colors;
+        }
+
         public void DrawObject() {
-            foreach(var point in Points) {
-                Console.SetCursorPosition(point.X, point.Y);
-                Console.Write(point.sign);
+            Console.ForegroundColor = ConsoleColor.White;
+            for(int i = 0; i < Points.Count; i++) {
+                Console.SetCursorPosition(Points[i].X, Points[i].Y);
+                if(i == 0 && colors.Count > 0) {
+                    Console.ForegroundColor = colors[0];
+                } else if(colors.Count > 0) {
+                    Console.ForegroundColor = colors[1];
+                }
+                Console.Write(Points[i].sign);
             }
         }
 
