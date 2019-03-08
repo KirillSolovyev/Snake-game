@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Snake {
-    class GameInterface {
+    class GameInterface {                                                     // Отображение всех игровых сообщений и надписей 
         string name;
         int points;
         List<string> text = new List<string>{ "Name: ", "Score: ", "Level: "};
@@ -24,12 +24,14 @@ namespace Snake {
             }
         }
 
+        // Запрос имени игрока
         public void InsertName() {
             Console.WriteLine("Insert you nickname");
             GetName = Console.ReadLine();
             Console.Clear();
         }
 
+        // При запуске в первый раз запросить имя игрока
         public GameInterface() {
             if(firstLaunch) {
                 InsertName();
@@ -37,11 +39,13 @@ namespace Snake {
             }
         }
 
+        // Вывод всех сообщение в консоль
         public void DisplayInterface(string levelname) {
             DisplayNotation();
             DisplayPlayerInfo(levelname);
         }
 
+        // Вывод всех надписей в консоль
         public void DisplayNotation() {
             Console.SetCursorPosition(2, 21);
             Console.ForegroundColor = ConsoleColor.Magenta;
@@ -49,6 +53,7 @@ namespace Snake {
             //Console.Write("R - Restart  S - Down  A - Left  D - Right");
         }
 
+        // Вывод игровых данных в консоль
         public void DisplayPlayerInfo(string levelname) {
             List<Object> arr = new List<Object> { GetName, points, levelname };
             Console.ForegroundColor = ConsoleColor.White;
@@ -58,11 +63,13 @@ namespace Snake {
             }
         }
 
+        // Увечение очков
         public void PointsUp(string levelname) {
             points++;
             DisplayPlayerInfo(levelname);
         }
 
+        // Вывод сообщения о конце игры в консоль
         public void GameOver() {
             string[] gameOverText = new string[4] { " -----------------", "     Game Over    ", " -----------------", "    R - Restart" };
             Console.ForegroundColor = ConsoleColor.White;

@@ -8,8 +8,8 @@ namespace Snake {
     class Program {
         static void Main(string[] args) {
             GameState game = new GameState();
-            game.DrawScene();
-            game.StartGame();
+            game.DrawScene(); // Выведение в консоль всех игровых объектов
+            game.StartGame(); // Запуск игры
         }
     }
 }

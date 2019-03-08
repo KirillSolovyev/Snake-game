@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Snake {
-    class Point {
-        int x;
+    class Point { // Класс, отвечающий за отображение одной точки в консоле
+        int x; 
         int y;
-        public char sign;
+        public char sign; // Символ точки при выводе в консоль
 
-        public int X {
+        public int X { // Реализация перемещения на противоположную сторону консоли при помощи свойства и метода CheckVal
             get {
                 return x;
             }
@@ -19,7 +19,7 @@ namespace Snake {
             }
         }
 
-        public int Y {
+        public int Y { // Реализация перемещения на противоположную сторону консоли при помощи свойства и метода CheckVal
             get {
                 return y;
             }
@@ -28,10 +28,10 @@ namespace Snake {
             }
         }
 
-        int checkVal(int val, int maxVal) {
-            if(val < 0) {
-                return maxVal - 1;
-            } else if(val >= maxVal) {
+        int checkVal(int val, int maxVal) { // Агрументы: val - зачение, которое будет проверяться, maxVal - максимальное значение, при достижении которого
+            if(val < 0) {                   // происходит перемещение на противоположную сторону   
+                return maxVal - 1;          // Если занчение меньше 0, то переместить на противоположную сторону
+            } else if(val >= maxVal) {      // Если значение больше или равняется maxVal - противоположная сторона
                 return 0;
             } else {
                 return val;
@@ -44,12 +44,12 @@ namespace Snake {
             Y = _y;
         }
 
-        public void Draw() {
+        public void Draw() {                // Вывод в консоль одной точки
             Console.SetCursorPosition(X, Y);
             Console.Write(sign);
         }
 
-        public void ClearPrev() {
+        public void ClearPrev() {           // Удаление точки из консоли
             Console.SetCursorPosition(X, Y);
             Console.Write(' ');
         }

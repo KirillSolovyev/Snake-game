@@ -5,15 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Snake {
-    class Objects {
-        public List<Point> Points = new List<Point>();
-        public List<ConsoleColor> colors = new List<ConsoleColor>();
-
-        public Point GetHead {
-            get {
-                return Points[0];
-            }
-        }
+    class Objects {                                                     // Родительский класс для всех игровых объектов
+        public List<Point> Points = new List<Point>();                  // Массив, хранящий все точки объекта
+        public List<ConsoleColor> colors = new List<ConsoleColor>();    // Массив, хранящий цвета объекта
 
         public Objects(char sign) {
             Points.Add(new Point(sign, 0, 0));
@@ -33,12 +27,12 @@ namespace Snake {
             this.colors = colors;
         }
 
-        public void DrawObject() {
+        public void DrawObject() {                                       // Вывод в консоль всех точек объекта
             Console.ForegroundColor = ConsoleColor.White;
             for(int i = 0; i < Points.Count; i++) {
                 Console.SetCursorPosition(Points[i].X, Points[i].Y);
-                if(i == 0 && colors.Count > 0) {
-                    Console.ForegroundColor = colors[0];
+                if(i == 0 && colors.Count > 0) {                        // Первый цвет массива colors  - цвет первого элемента, второй - всех остальных элементов
+                    Console.ForegroundColor = colors[0];                // Если массив цветов colors не пустой, то вывести в консоль цветной символ
                 } else if(colors.Count > 0) {
                     Console.ForegroundColor = colors[1];
                 }
@@ -46,7 +40,7 @@ namespace Snake {
             }
         }
 
-        public void ClearObject() {
+        public void ClearObject() {                                     // Удалить из консоли все точки объекта
             foreach(var p in Points) {
                 Console.SetCursorPosition(p.X, p.Y);
                 Console.Write(' ');

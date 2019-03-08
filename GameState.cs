@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Snake {
-    class GameState {
+    class GameState {                                                 // Основной класс игры. Отвечает за запуск игры
         Serpent snake;
         Food food;
         Wall walls;
         GameInterface IntFace;
 
-        public GameState() {
+        public GameState() {                                          // При создании класса инициализировать все игровый объекты
             IntFace = new GameInterface();
             Console.CursorVisible = false;
             Console.SetWindowSize(40, 30);
@@ -22,6 +22,7 @@ namespace Snake {
             food = new Food('@', new List<Objects> { snake, walls }, new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Yellow });
         }
 
+        // Вывод в консоль всех игровых элементов и интерфейса
         public void DrawScene() {
             snake.DrawObject();
             food.DrawObject();
@@ -29,14 +30,15 @@ namespace Snake {
             IntFace.DisplayInterface(walls.LevelName);
         }
 
+        // Проверка позиции змейки на столкновение. Возварщает true если не произошло столкновения со стеной, false если змейка столкнулась со стеной
         public bool CheckPosition() {
             bool cont = true;
 
-            if(HasSamePosition(snake.Points[0], food.Points[0])) {
+            if(HasSamePosition(snake.Points[0], food.Points[0])) { // Если змейка сталкивается с едой - увеличть змейка и переместить еду
                 snake.Points.Add(new Point(snake.Points[0].sign, snake.Points[snake.Points.Count - 1].X, snake.Points[snake.Points.Count - 1].Y));
                 food.GenerateFood(new List<Objects> { snake, walls });
-                IntFace.PointsUp(walls.LevelName);
-            } else if(CollidesWith(snake.Points[0], walls) || CollidesWith(snake.Points[0], snake)){
+                IntFace.PointsUp(walls.LevelName);                 // Увеличить количество очков на 1
+            } else if(CollidesWith(snake.Points[0], walls) || CollidesWith(snake.Points[0], snake)){ // Если змейка сталкивается с едой, то вывести "Конец игры"
                 snake.Death();
                 IntFace.GameOver();
                 cont = false;
@@ -44,10 +46,12 @@ namespace Snake {
             return cont;
         }
 
-        public bool HasSamePosition(Point p1, Point p2) {
+        // Проверка координат объектов
+        public bool HasSamePosition(Point p1, Point p2) {       
             return (p1.X == p2.X && p1.Y == p2.Y ? true : false);
         }
 
+        // Проверка координат объектов, содержащих больше одной точки
         public bool CollidesWith(Point p, Objects obj) {
             bool res = false;
             for(int i = 0; i < obj.Points.Count; i++) {
@@ -60,6 +64,7 @@ namespace Snake {
             return res;
         }
 
+        // Перезапуск игры
         public void RestartGame() {
             Console.Clear();
             GameState game = new GameState();
@@ -67,6 +72,7 @@ namespace Snake {
             game.StartGame();
         }
 
+        // Запуск игры
         public void StartGame() {
             ConsoleKeyInfo pressed;
             bool _continue = true;
@@ -88,10 +94,10 @@ namespace Snake {
                     case ConsoleKey.X:
                         break;
                 }
-                _continue = CheckPosition();
+                _continue = CheckPosition(); // Проверка на столкновение. Если _continue == false, то игры прерывается
             }
             bool restart = false;
-            while(!restart) {
+            while(!restart) {               // При нажатии R игра перезапускается
                 pressed = Console.ReadKey(true);
                 if(pressed.Key == ConsoleKey.R) {
                     restart = true;
