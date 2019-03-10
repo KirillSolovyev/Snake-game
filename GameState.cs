@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Snake {
     class GameState {                                                 // Основной класс игры. Отвечает за запуск игры
@@ -10,6 +11,8 @@ namespace Snake {
         Food food;
         Wall walls;
         GameInterface IntFace;
+        Timer timer = new Timer(200);
+        bool _continue = true;
 
         public GameState() {                                          // При создании класса инициализировать все игровый объекты
             IntFace = new GameInterface();
@@ -20,6 +23,20 @@ namespace Snake {
             snake = new Serpent('0', 20, 10, new List<ConsoleColor> { ConsoleColor.Green, ConsoleColor.DarkGreen });
             walls = new Wall('#', "Level1", new List<ConsoleColor> { ConsoleColor.Red, ConsoleColor.Red });
             food = new Food('@', new List<Objects> { snake, walls }, new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Yellow });
+        }
+
+        public void Run() {
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
+        }
+
+        public void Stop() {
+            timer.Stop();
+        }
+
+        public void Timer_Elapsed(object sender, ElapsedEventArgs e) {
+            snake.Move();
+            _continue = CheckPosition();
         }
 
         // Вывод в консоль всех игровых элементов и интерфейса
@@ -41,6 +58,7 @@ namespace Snake {
             } else if(CollidesWith(snake.Points[0], walls) || CollidesWith(snake.Points[0], snake)){ // Если змейка сталкивается с едой, то вывести "Конец игры"
                 snake.Death();
                 IntFace.GameOver();
+                Stop();
                 cont = false;
             }
             return cont;
@@ -67,34 +85,36 @@ namespace Snake {
         // Перезапуск игры
         public void RestartGame() {
             Console.Clear();
-            GameState game = new GameState();
-            game.DrawScene();
-            game.StartGame();
+            GameState NewGame = new GameState();
+            NewGame.IntFace.GetName = IntFace.GetName;
+            NewGame.DrawScene();
+            NewGame.StartGame();
         }
 
         // Запуск игры
         public void StartGame() {
+            Run();
             ConsoleKeyInfo pressed;
-            bool _continue = true;
             while(_continue) {
                 pressed = Console.ReadKey(true);
                 switch(pressed.Key) {
                     case ConsoleKey.W:
-                        snake.Move(0, -1);
+                        snake.ChangeInX = 0;
+                        snake.ChangeInY = -1;
                         break;
                     case ConsoleKey.S:
-                        snake.Move(0, 1);
+                        snake.ChangeInX = 0;
+                        snake.ChangeInY = 1;
                         break;
                     case ConsoleKey.A:
-                        snake.Move(-1, 0);
+                        snake.ChangeInX = -1;
+                        snake.ChangeInY = 0;
                         break;
                     case ConsoleKey.D:
-                        snake.Move(1, 0);
-                        break;
-                    case ConsoleKey.X:
+                        snake.ChangeInX = 1;
+                        snake.ChangeInY = 0;
                         break;
                 }
-                _continue = CheckPosition(); // Проверка на столкновение. Если _continue == false, то игры прерывается
             }
             bool restart = false;
             while(!restart) {               // При нажатии R игра перезапускается

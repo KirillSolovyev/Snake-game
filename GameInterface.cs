@@ -15,7 +15,7 @@ namespace Snake {
             get {
                 return name;
             }
-            private set {
+            set {
                 if(value != "") {
                     name = value;
                 } else {

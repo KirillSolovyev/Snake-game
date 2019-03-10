@@ -6,6 +6,23 @@ using System.Threading.Tasks;
 
 namespace Snake {
     class Serpent : Objects{                                                                            // Игровой объект - змейка
+        int cx = 0, cy = -1;
+        public int ChangeInX {
+            get {
+                return cx;
+            }
+            set {
+                cx = value;
+            }
+        }
+        public int ChangeInY {
+            get {
+                return cy;
+            }
+            set {
+                cy = value;
+            }
+        }
 
         public Serpent(char sign, int x, int y, List<ConsoleColor> colors) : base(sign, x, y, colors){
             Points.Add(new Point(sign, x, y + 1));
@@ -17,8 +34,8 @@ namespace Snake {
                 p.Y += speedY;
         }
 
-        public void Move(int speedX, int speedY) {                                                      // Метод для перемещения всех точек змейки
-            if(Points.Count == 1 || Points[0].X + speedX != Points[1].X || Points[0].Y + speedY != Points[1].Y) { // Проверка на движение назад
+        public void Move() {                                                      // Метод для перемещения всех точек змейки
+            if(Points.Count == 1 || Points[0].X + ChangeInX != Points[1].X || Points[0].Y + ChangeInY != Points[1].Y) { // Проверка на движение назад
                 ClearObject();
 
                 for(int i = Points.Count - 1; i > 0; i--) {                                            // Перемещение каждой точки на координату следующей точки
@@ -26,7 +43,7 @@ namespace Snake {
                     Points[i].Y = Points[i - 1].Y;
                 }
 
-                ChangePos(Points[0], speedX, speedY);                                                  // Перемещение первой точки на одну координату
+                ChangePos(Points[0], ChangeInX, ChangeInY);                                                  // Перемещение первой точки на одну координату
                 DrawObject();
             }
         }
